@@ -1,0 +1,44 @@
+package com.mx.Personas;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Implementacion implements IMetodos{
+
+	
+	List<Personas> lista = new ArrayList<Personas>();
+
+	@Override
+	public void guardar(Personas personas) {
+lista.add(personas);		
+	}
+
+	@Override
+	public void editar(int indice, Personas personas) {
+		lista.set(indice, personas);
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mostrar() {
+
+		System.out.println(lista);
+	}
+
+	@Override
+	public void eliminar(int indice) {
+		lista.remove(indice);
+		
+	}
+
+	@Override
+	public Personas buscar(int indice) {
+		return lista.get(indice);
+	}
+	public void contar() {
+		int cont = lista.size();
+		System.out.println("La lista contiene: " + cont + "personas");
+	}
+
+}

@@ -1,0 +1,46 @@
+package com.mxCoche;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Principal {
+	public static void main(String[] args) {
+		Coche coche1 = new Coche ("Toyota", "Corolla", 2001, "rojo", 200000);
+		Coche coche2 = new Coche ("Ford", "Mustang", 2021, "Blanco", 250000);
+		Coche coche3 = new Coche ("Ford", "Mustang", 2022, "Blanco", 250000);
+		Coche coche4 = new Coche ("Ford", "Mustang", 2023, "Blanco", 250000);
+		Coche coche5 = new Coche ("Ford", "Mustang", 2024, "Blanco", 250000);
+		
+		Coche auxCoche = null;
+		List<Coche> lista = new ArrayList<Coche>();
+		
+		lista.add(coche1);
+		lista.add(coche2);
+		lista.add(coche3);
+		lista.add(coche4);
+		lista.add(coche5);
+		
+		System.out.println("Elementos en la lista \n" + lista);
+		
+		auxCoche = lista.get(0);
+		System.out.println("Elemento encontrado \n" + auxCoche);
+		
+		auxCoche = lista.get(0);
+		auxCoche.setColor("Azul cielo");
+		auxCoche.setPrecio(500000);
+		System.out.println("Elemento editado \n" + auxCoche);
+		
+		lista.remove(5);
+		System.out.println("Lista actualizada \n" + auxCoche);
+		
+		
+		
+		
+		
+		
+	}
+	
+	
+	
+
+}

@@ -1,0 +1,237 @@
+package com.mx.Celular;
+
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+public class Principal {
+	public static void main(String[] args) {
+		Celular celular1 = new Celular("Apple", "Iphone 14", 6, "negro", 128, 14000);
+		Celular celular2 = new Celular("Morotola", "Iphone 14", 6, "negro", 128, 14000);
+		Celular celular3 = new Celular("Apple", "Iphone 14", 6, "negro", 128, 14000);
+		Celular celular4 = new Celular("Apple", "Iphone 14", 6, "negro", 128, 14000);
+		Celular celular5 = new Celular("Apple", "Iphone 14", 6, "negro", 128, 14000);
+		
+		Celular cel = null;
+		
+		Implementacion imp = new Implementacion();
+		
+		imp.guardar(celular1);
+		imp.guardar(celular2);
+		imp.guardar(celular3);
+		imp.guardar(celular4);
+		imp.guardar(celular5);
+		
+		imp.mostrar();
+		/*
+		//editar
+		cel = imp.buscar(0);
+		System.out.println("Elemento encontrado: "+ cel);
+		cel=imp.buscar(1);
+		cel.setModelo("MotoG 68");
+		cel.setPrecio(2400);
+		imp.editar(1, celular2);
+		imp.mostrar();
+		
+		//eliminar
+		imp.emilinar(3);
+		imp.mostrar();
+		
+		imp.contar();
+		*/
+		
+		Scanner datos = new Scanner(System.in);
+		int menuP =0, menuS=0, indice = 0;
+		
+		String marca, modelo, color;
+		int ram, almacenamiento;
+		double precio;
+		
+		do {
+			System.out.println("MENU");
+			System.out.println("1.- ALTA");
+			System.out.println("2.- BUSCAR");
+			System.out.println("3.- EDITAR");
+			System.out.println("4.- ELIMINAR");
+			System.out.println("5.- MOSTRAR");
+			System.out.println("6.- CONTAR");
+			System.out.println("7.- SALIR");
+			System.out.println("Eligue una opcion valida del menu");
+			
+			try {
+				menuP = datos.nextInt();
+				datos.nextLine();
+				
+				switch(menuP) {
+				case 1:
+					System.out.println("1.- ALTA");
+					System.out.println("LLENAR LOS SIGUIENTES DATOS SOBRE EL CELULAR");
+					System.out.println("Marca: ");
+					marca = datos.nextLine();
+					System.out.println("Marca: ");
+					marca = datos.nextLine();
+					System.out.println("Modelo: ");
+					modelo = datos.nextLine();
+					System.out.println("Ram: ");
+					ram = datos.nextInt();
+					datos.nextLine();
+					System.out.println("Color: ");
+					color = datos.nextLine();
+					System.out.println("Almacenamiento: ");
+					almacenamiento = datos.nextInt();
+					datos.nextLine();
+					System.out.println("Precio: ");
+					precio = datos.nextDouble();
+					datos.nextLine();
+					
+					cel = new Celular(marca, modelo, ram, color, almacenamiento, precio);
+					
+					if (imp.existenDuplicado(cel)) {
+						System.out.println("Este registro ya existe en lista");
+					}else {
+						imp.guardar(cel);
+						System.out.println("Se guardo com exito el celular " + cel.getMarca() + "en la lista"); 
+					}break;
+					
+				case 2:
+					System.out.println("2.- BUSCAR");
+					imprimirDatos(imp);
+					if(imp.lista.size() > 0) {
+						System.out.println("Indice para mostrar la informacion");
+						indice = datos.nextInt();
+						datos.nextLine();
+						
+						if(indice >=0 && indice <imp.lista.size()) {
+							cel = imp.buscar(indice);
+							System.out.println("Esta es la informacion completa del celular: " + cel);
+							
+						}else {
+							System.out.println("Indice fuera de rango intenta con otro dentro del rango");
+						}
+					}
+					break;
+					
+				case 3:
+					System.out.println("3.- EDITAR");
+					imprimirDatos(imp);
+					if (imp.lista.size() > 0) {
+						System.out.println("indique el indice a editar");
+						indice = datos.nextInt();
+						datos.nextLine();
+						
+						if(indice >= 0 && indice < imp.lista.size()) {
+							do {
+								System.out.println("Menu a editar");
+								System.out.println("1.- Editar marca");
+								System.out.println("2.- Editar modelo");
+								System.out.println("3.- Editar ram");
+								System.out.println("4.- Editar color");
+								System.out.println("5.- Editar almacenamiento");
+								System.out.println("6.- Editar precio");
+								System.out.println("7.- Regresar al menu principal");
+								menuS = datos.nextInt();
+								datos.nextLine();
+								cel = imp.buscar(indice);
+								
+								switch (menuS) {
+								case 1:
+									System.out.println("Ingresa la nueva marca");
+									marca = datos.nextLine();
+									cel.setMarca(marca);
+									break;
+								case 2:
+									System.out.println("Ingresa el nuevo modelo");
+									modelo = datos.nextLine();
+									cel.setModelo(modelo);
+									break;
+								case 3: 
+									System.out.println("Ingresa la nueva ram");
+									ram = datos.nextInt();
+									cel.setRam(ram);
+									break;
+								case 4:
+									System.out.println("Ingresa el nuevo color");
+									color = datos.nextLine();
+									cel.setColor(color);
+									break;
+								case 5: 
+									System.out.println("Ingresa el nuevo almacenamiento");
+									almacenamiento = datos.nextInt();
+									cel.setAlmacenamiento(almacenamiento);
+									break;
+								case 6: 
+									System.out.println("Ingresa el nuevo precio");
+									precio = datos.nextDouble();
+									cel.setPrecio(precio);
+									break;
+								case 7: 
+									System.out.println("Regresando al menu principal");
+									break;
+									default:
+										System.out.println("Indice no valido");
+										break;
+									
+								}
+								System.out.println("Edicion exitosa");
+							}while(menuS != 7);
+						}else {
+							System.out.println("indice fuera de rango intente nuevamente");
+						}
+					}
+					break;
+					
+				case 4:
+					System.out.println("ELIMINAR");
+					imprimirDatos(imp);
+					if(imp.lista.size() >0) {
+						System.out.println("Indica el indice que desea eliminar");
+						indice = datos.nextInt();
+						if(indice >= 0 && indice <imp.lista.size()) {
+							imp.emilinar(indice);
+							System.out.println("Eliminacion exitosa");
+						}else {
+							System.out.println("Indice fuera de rango");
+						}
+					}
+					break;
+					
+				case 5:
+					System.out.println("5.- MOSTRAR");
+					if(imp.lista.size() >=0) {
+						imp.mostrar();
+					}else {
+						System.out.println("No hay registros disponibles");
+					}
+					break;
+				case 6:
+					System.out.println("6.- CONTAR");
+					imp.contar();
+					break;
+					
+				case 7:
+					System.out.println("Saliendo del muno... hasta luego");
+					break;
+					default:
+						System.out.println("Indice fuera del rango, intoduce una opcion correcta");
+						break;
+				}
+				
+			}catch(InputMismatchException e) {
+				System.out.println("Entrada invalida, por favor ingresa un nuemero");
+				datos.nextLine();
+				}catch(Exception e) {
+					System.out.println("Ocurrio un error inesperado ");
+				}
+		}while(menuP !=7);
+	}
+	
+	public static void imprimirDatos(Implementacion imp) {
+		System.out.println("Celulares registrados");
+		if(imp.lista.size() >0) {
+			for(int i=0; i<imp.lista.size(); i++) {
+				System.out.println("El celular [" + i + "] de marca: " + imp.lista.get(i).getMarca());
+			}
+		}
+	}
+}
+
+

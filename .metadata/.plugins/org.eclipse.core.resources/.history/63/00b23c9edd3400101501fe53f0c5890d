@@ -1,0 +1,52 @@
+package com.mx.articulos;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class Principal {
+	public static void main(String[] args) {
+		Articulos articulo1 = new Articulos ("Sudadera", "Nike", 975134, "Negro", 599);
+		Articulos articulo2 = new Articulos ("Pans", "Adidas", 874512, "Gris", 499);
+		Articulos articulo3 = new Articulos ("Chamarra", "ZARA", 4127856, "Blanco", 799);
+		Articulos articulo4 = new Articulos ("Tenis", "Nike", 4125886, "Rojo", 2500);
+		Articulos articulo5 = new Articulos ("Audifonos", "Beats", 12487326, "Blanco", 1349);
+		Articulos articulo6 = new Articulos ("Celular", "Samsung", 5687420, "Azul", 12999);
+		
+		Articulos auxArticulos = null;
+		List<Articulos> lista = new ArrayList<Articulos>();
+		
+		lista.add(articulo1);
+		lista.add(articulo2);
+		lista.add(articulo3);
+		lista.add(articulo4);
+		lista.add(articulo5);
+		lista.add(articulo6);
+		
+		System.out.println("Elementos en la lista \n" + lista);
+		
+		auxArticulos = lista.get(0);
+		System.out.println("Elemento encontrado \n" + auxArticulos);
+		
+		auxArticulos = lista.get(1);
+		auxArticulos.setColor("Verde");
+		auxArticulos.setPrecio(799);
+		System.out.println("Articulo editado \n" + auxArticulos);
+		
+		lista.remove(4);
+		System.out.println("Lista actualizada \n" + lista);
+		
+		System.out.println("Hay: "+ lista.size() + "articulos en la lista");
+		
+		lista.clear();
+		
+		if(lista.isEmpty()) {
+			System.out.println("La lista esta vacia ");
+			
+		}else {
+			System.out.println("La lista es: " + lista);
+		}
+		
+		Collections.sort(lista, (Articulo1, Articulo2)->articulo1.getNombre().compareTo(articulo2.getNombre()));
+}
+}

@@ -1,0 +1,95 @@
+package com.mx.Celular;
+
+import com.mx.Personas.Scanner;
+
+public class Principal {
+	public static void main(String[] args) {
+		Celular celular1 = new Celular("Apple", "Iphone 14", 6, "negro", 128, 14000);
+		Celular celular2 = new Celular("Morotola", "Iphone 14", 6, "negro", 128, 14000);
+		Celular celular3 = new Celular("Apple", "Iphone 14", 6, "negro", 128, 14000);
+		Celular celular4 = new Celular("Apple", "Iphone 14", 6, "negro", 128, 14000);
+		Celular celular5 = new Celular("Apple", "Iphone 14", 6, "negro", 128, 14000);
+		
+		Celular cel = null;
+		
+		Implementacion imp = new Implementacion();
+		
+		imp.guardar(celular1);
+		imp.guardar(celular2);
+		imp.guardar(celular3);
+		imp.guardar(celular4);
+		imp.guardar(celular5);
+		
+		imp.mostrar();
+		/*
+		//editar
+		cel = imp.buscar(0);
+		System.out.println("Elemento encontrado: "+ cel);
+		cel=imp.buscar(1);
+		cel.setModelo("MotoG 68");
+		cel.setPrecio(2400);
+		imp.editar(1, celular2);
+		imp.mostrar();
+		
+		//eliminar
+		imp.emilinar(3);
+		imp.mostrar();
+		
+		imp.contar();
+		*/
+		
+		java.util.Scanner datos = new Scanner(System.in);
+		int menuP =0, menuS=0, indice = 0;
+		
+		String marca, modelo, color;
+		int ram, almacenamiento;
+		double precio;
+		
+		do {
+			System.out.println("MENU");
+			System.out.println("1.- ALTA");
+			System.out.println("2.- BUSCAR");
+			System.out.println("3.- EDITAR");
+			System.out.println("4.- ELIMINAR");
+			System.out.println("5.- MOSTRAR");
+			System.out.println("6.- CONTAR");
+			System.out.println("7.- SALIR");
+			System.out.println("Eligue una opcion valida del menu");
+			
+			try {
+				menuP = datos.nextInt();
+				datos.nextLine();
+				
+				switch(menuP) {
+				case 1:
+					System.out.println("1.- ALTA");
+					System.out.println("LLENAR LOS SIGUIENTES DATOS SOBRE EL CELULAR");
+					System.out.println("Marca: ");
+					marca = datos.nextLine();
+					System.out.println("Marca: ");
+					marca = datos.nextLine();
+					System.out.println("Modelo: ");
+					modelo = datos.nextLine();
+					System.out.println("Ram: ");
+					ram = datos.nextInt();
+					datos.nextLine();
+					System.out.println("Color: ");
+					color = datos.nextLine();
+					System.out.println("Almacenamiento: ");
+					almacenamiento = datos.nextInt();
+					datos.nextLine();
+					System.out.println("Precio: ");
+					precio = datos.nextDouble();
+					datos.nextLine();
+					
+					cel = new Celular(marca, modelo, ram, color, almacenamiento, precio);
+					
+				}
+				
+			}catch(Exception e) {
+				
+			}
+		}while(menuP !=7);
+	}
+
+}

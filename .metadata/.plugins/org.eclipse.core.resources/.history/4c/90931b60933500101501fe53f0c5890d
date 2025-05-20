@@ -1,0 +1,40 @@
+package com.mx.Personas;
+
+
+public class Principal {
+	public static void main(String[] args) {
+		Personas persona1 = new Personas("Carlos", "Jiemenez", 18, "hombre", 78, 1.78);
+		Personas persona2 = new Personas("Juan", "Rodriguez", 20, "hombre", 80, 1.90);
+		Personas persona3 = new Personas("Alejandra", "Carmona", 25, "mujer", 55, 1.63);
+		Personas persona4 = new Personas("Vania", "Tapia", 23, "mujer", 50, 1.50);
+		Personas persona5 = new Personas("Josue", "Hernandez", 30, "hombre", 75, 1.81);
+		
+		Personas per = null;
+		
+		Implementacion imp = new Implementacion();
+		
+		imp.guardar(persona1);
+		imp.guardar(persona2);
+		imp.guardar(persona3);
+		imp.guardar(persona1);
+		imp.guardar(persona5);
+		
+		imp.mostrar();
+		
+		//editar
+		per = imp.buscar(0);
+		System.out.println("Elemento encontrado: "+ per);
+		per=imp.buscar(1);
+		per.setNombre("MotoG 68");
+		per.setPeso(2400);
+		imp.editar(1, persona2);
+		imp.mostrar();
+		
+		//eliminar
+		imp.eliminar(3);
+		imp.mostrar();
+		
+		imp.contar();
+	}
+
+}

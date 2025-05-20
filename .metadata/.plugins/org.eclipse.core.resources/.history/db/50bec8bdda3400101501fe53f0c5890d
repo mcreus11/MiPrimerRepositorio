@@ -1,0 +1,16 @@
+package com.mx.articulos;
+
+
+	public class Coche {
+		private String marca;
+		private String submarca;
+		private int modelo;
+		private String color;
+		private double precio;
+		
+		
+		public Coche() {
+			
+		}
+
+

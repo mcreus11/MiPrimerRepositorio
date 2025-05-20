@@ -1,0 +1,6 @@
+INDEX VERSION 1.134+C:\Users\antma\Desktop\curso_carpeta\semana1_POO\workspace\.metadata\.plugins\org.eclipse.jdt.core
+1620673288.index
+2356011476.index
+1865797976.index
+4235821725.index
+1513731006.index

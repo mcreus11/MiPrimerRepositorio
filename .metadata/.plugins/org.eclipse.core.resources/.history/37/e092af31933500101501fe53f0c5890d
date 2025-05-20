@@ -1,0 +1,40 @@
+package com.mx.Personas;
+
+
+public class Principal {
+	public static void main(String[] args) {
+		Personas persona1 = new Personas("Apple", "Iphone 14", 6, "negro", 128, 14000);
+		Personas persona2 = new Personas("Morotola", "Iphone 14", 6, "negro", 128, 14000);
+		Personas persona3 = new Personas("Apple", "Iphone 14", 6, "negro", 128, 14000);
+		Personas persona4 = new Personas("Apple", "Iphone 14", 6, "negro", 128, 14000);
+		Personas persona5 = new Personas("Apple", "Iphone 14", 6, "negro", 128, 14000);
+		
+		Personas per = null;
+		
+		Implementacion imp = new Implementacion();
+		
+		imp.guardar(persona1);
+		imp.guardar(persona2);
+		imp.guardar(persona3);
+		imp.guardar(persona1);
+		imp.guardar(persona5);
+		
+		imp.mostrar();
+		
+		//editar
+		per = imp.buscar(0);
+		System.out.println("Elemento encontrado: "+ per);
+		per=imp.buscar(1);
+		per.setNombre("MotoG 68");
+		per.setPeso(2400);
+		imp.editar(1, persona2);
+		imp.mostrar();
+		
+		//eliminar
+		imp.eliminar(3);
+		imp.mostrar();
+		
+		imp.contar();
+	}
+
+}

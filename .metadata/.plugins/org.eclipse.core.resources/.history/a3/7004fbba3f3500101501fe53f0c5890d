@@ -1,0 +1,291 @@
+package com.mx.articulos;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Scanner;
+
+
+public class Principal {
+	public static void main(String[] args) {
+		Articulos articulo1 = new Articulos ("Sudadera", "Nike", 975134, "Negro", 599);
+		Articulos articulo2 = new Articulos ("Pans", "Adidas", 874512, "Gris", 499);
+		Articulos articulo3 = new Articulos ("Chamarra", "ZARA", 4127856, "Blanco", 799);
+		Articulos articulo4 = new Articulos ("Tenis", "Nike", 4125886, "Rojo", 2500);
+		Articulos articulo5 = new Articulos ("Audifonos", "Beats", 12487326, "Blanco", 1349);
+		Articulos articulo6 = new Articulos ("Celular", "Samsung", 5687420, "Azul", 12999);
+		
+		Articulos auxArticulos = null;
+		List<Articulos> lista = new ArrayList<Articulos>();
+		
+		lista.add(articulo1);
+		lista.add(articulo2);
+		lista.add(articulo3);
+		lista.add(articulo4);
+		lista.add(articulo5);
+		lista.add(articulo6);
+		/*
+		System.out.println("Elementos en la lista \n" + lista);
+		
+		auxArticulos = lista.get(0);
+		System.out.println("Elemento encontrado \n" + auxArticulos);
+		
+		auxArticulos = lista.get(1);
+		auxArticulos.setColor("Verde");
+		auxArticulos.setPrecio(799);
+		System.out.println("Articulo editado \n" + auxArticulos);
+		
+		lista.remove(4);
+		System.out.println("Lista actualizada \n" + lista);
+		
+		System.out.println("Hay: "+ lista.size() + "articulos en la lista");
+		
+		lista.clear();
+		
+		if(lista.isEmpty()) {
+			System.out.println("La lista esta vacia ");
+			
+		}else {
+			System.out.println("La lista es: " + lista);
+		}
+		
+		Collections.sort(lista, (Articulo1, Articulo2)->articulo1.getNombre().compareTo(articulo2.getNombre()));
+		System.out.println("La lista actualizada: " + lista);
+		*/
+		
+		
+		
+		Scanner scan =null; 
+		int menuPrincipal = 0, menuSecundario = 0, indice = 0;
+		
+		String nombre, marca, color;
+		int codigo;
+		double precio;
+		
+		do {
+			System.out.println("_______MENU______");
+			System.out.println("1.- Agregar un nuevo registro");
+			System.out.println("2.- Mostrar lista ");
+			System.out.println("3.- Editar ");
+			System.out.println("4.- Buscar un elemento ");
+			System.out.println("5.- Eliminar articulo");
+			System.out.println("6.- contar todos los articulos ");
+			System.out.println("7.- Eliminar todos los articulos ");
+			System.out.println("8.- salir ");
+			System.out.println("Elige una opcion");
+			scan = new Scanner(System.in);
+			
+			 while (!scan.hasNextInt()) {
+			        System.out.println("❌ Entrada inválida. Debes ingresar un número del 1 al 8.");
+			        System.out.print("Inténtalo de nuevo: ");
+			        scan.next();
+			    }
+			 menuPrincipal = scan.nextInt();
+			 
+
+			    if (menuPrincipal < 1 || menuPrincipal > 8) {
+			        System.out.println("❌ Opción fuera de rango. Debes elegir un número del 1 al 8.\n");
+			    }
+			
+			switch(menuPrincipal){
+			case 1:
+				System.out.println("1.- Agregar un nuevo articulo");
+				System.out.println("Escribe el nombre del articulo");
+				scan = new Scanner(System.in);
+				nombre = scan.nextLine();
+				
+				System.out.println("Escribe la marca ");
+				scan = new Scanner(System.in);
+				marca = scan.nextLine();
+				
+				System.out.println("Escribe el codigo");
+				scan = new Scanner(System.in);
+				codigo = scan.nextInt();
+				
+				System.out.println("Escribe el color del alrticulo ");
+				scan = new Scanner(System.in);
+				color = scan.nextLine();
+				
+				System.out.println("Escribe el precio del articulo ");
+				scan = new Scanner(System.in);
+				precio = scan.nextDouble();
+				
+				auxArticulos =new Articulos (nombre, marca, codigo, color, precio);
+				
+				lista.add(auxArticulos);
+				System.err.println("El registro fue exitoso ");
+				
+				break;
+				
+			case 2: 
+				System.out.println("2.- Mostrar lista ");
+				System.out.println("Los articulos almacenados son: \n " + lista);
+				break;
+			case 3:
+				System.out.println("3.- Editar ");
+				System.out.println("Ingresar el indice para editar ");
+				scan = new Scanner(System.in);
+				indice = scan.nextInt();
+				
+				auxArticulos = lista.get(indice);
+				do {
+					System.out.println("1.- Editar nombre");
+					System.out.println("2.- Editar marca");
+					System.out.println("3.- Editar codigo");
+					System.out.println("4.- Editar color");
+					System.out.println("5.- Editar precio");
+					System.out.println("6.- Regresar al menu principal ");
+					System.out.println("Eligue una opcion  ");
+					
+					scan = new Scanner(System.in);
+					while (!scan.hasNextInt()) {
+				        System.out.println("❌ Entrada inválida. Debes ingresar un número del 1 al 6.");
+				        System.out.print("Inténtalo de nuevo: ");
+				        scan.next(); 
+				    }
+					menuSecundario = scan.nextInt();
+
+
+				    if (menuSecundario < 1 || menuSecundario > 6) {
+				        System.out.println("❌ Opción fuera de rango. Debes elegir un número del 1 al 6.\n");
+				    }
+
+					switch(menuSecundario) {
+					case 1: 
+						System.out.println("Escribe el nuevo nombre: ");
+						scan = new Scanner(System.in);
+						nombre = scan.nextLine();
+						auxArticulos.setNombre(nombre);
+						lista.set(indice, auxArticulos);
+						System.out.println("Se edito correcatmente ");
+						break;
+						
+					case 2:
+						System.out.println("Escribe la nueva marca: ");
+						scan = new Scanner(System.in);
+						marca = scan.nextLine();
+						auxArticulos.setMarca(marca);
+						lista.set(indice, auxArticulos);
+						System.out.println("Se edito correcatmente ");
+						break;
+						
+					case 3:
+						System.out.println("Escribe el nuevo codigo: ");
+						scan = new Scanner(System.in);
+						codigo = scan.nextInt();
+						auxArticulos.setCodigo(codigo);
+						lista.set(indice, auxArticulos);
+						System.out.println("Se edito correcatmente ");
+						break;
+					
+					case 4: 
+						System.out.println("Escribe el nuevo color ");
+						scan = new Scanner(System.in);
+						color = scan.nextLine();
+						auxArticulos.setColor(color);
+						lista.set(indice, auxArticulos);
+						System.out.println("Se edito correcatmente ");
+						break;
+						
+					case 5: 
+						System.out.println("Escribe el nuevo precio ");
+						scan = new Scanner(System.in);
+						precio = scan.nextDouble();
+						auxArticulos.setPrecio(precio);
+						lista.set(indice, auxArticulos);
+						System.out.println("Se edito correcatmente ");
+						break;
+						
+					case 6: 
+						
+						System.out.println("Regresando al menu principal  ");
+						break;
+						default: 
+							System.out.println("Indice fuera de rango intenta otra vez  ");
+							break;
+					}
+					
+					
+					
+				}while(menuSecundario < 1 || menuSecundario > 6);
+				break;
+				
+			case 4: 
+				
+				System.out.println("4.- Buscar un articulo  ");
+				System.out.print("Ingrese el nombre del artículo a buscar: ");
+				 Scanner scanner = new Scanner(System.in);
+		        String nombreBuscado = scanner.nextLine();
+
+		        Articulos auxArticulo = null;
+
+		        for (Articulos art : lista) {
+		            if (art.getNombre().equalsIgnoreCase(nombreBuscado)) {
+		                auxArticulo = art;
+		                break;
+		            }
+		        }
+
+		        if (auxArticulo != null) {
+		            System.out.println("\nArtículo encontrado:");
+		            System.out.println("Nombre: " + auxArticulo.getNombre());
+		            System.out.println("Marca: " + auxArticulo.getMarca());
+		            System.out.println("Código: " + auxArticulo.getCodigo());
+		            System.out.println("Color: " + auxArticulo.getColor());
+		            System.out.println("Precio: $" + auxArticulo.getPrecio());
+		        } else {
+		            System.out.println("\nArtículo no encontrado.");
+		        }
+
+		        
+
+				break;
+				
+			case 5:
+				System.out.println("5.- Eliminar un articulo  ");
+
+				System.out.print("Ingrese el nombre del artículo a eliminar: ");
+		        Scanner scanner1 = new Scanner(System.in);
+				String nombreBuscado1 = scanner1.nextLine();
+
+				Iterator<Articulos> iter = lista.iterator();
+				while (iter.hasNext()) {
+				    Articulos art = iter.next();
+				    if (art.getNombre().equalsIgnoreCase(nombreBuscado1)) {
+				        iter.remove();
+				        System.out.println("Artículo eliminado: " + art.getNombre());
+				        break;
+				    }
+				}
+
+
+				break;
+				
+			case 6:
+				System.out.println("6.- Contando los aticulos de la lista   ");
+				System.out.println("Existen: " + lista.size() + "articulos en lista");
+				break;
+				
+			case 7: 
+				System.out.println("7.- Eliminar todos los articulos   ");
+				lista.removeAll(lista);
+				System.out.println("Existen: " + lista.size() + "articulos en lista");
+				break;
+				
+			case 8: 
+				System.out.println("Saliendo del menu  ");
+				break;
+				default:
+					System.out.println("opcion invalida  ");
+					
+				break;
+			}
+			
+		}while(menuPrincipal < 1 || menuPrincipal > 8);
+		
+}
+
+	
+	
+}

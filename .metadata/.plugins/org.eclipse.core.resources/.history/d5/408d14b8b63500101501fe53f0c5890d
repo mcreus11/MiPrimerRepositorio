@@ -1,0 +1,315 @@
+package com.mx.Personas;
+
+import java.util.InputMismatchException;
+import java.util.Iterator;
+import java.util.Scanner;
+
+
+
+
+public class Principal {
+	public static void main(String[] args) {
+		Personas persona1 = new Personas("Carlos", "Jiemenez", 18, "hombre", 78, 1.78);
+		Personas persona2 = new Personas("Juan", "Rodriguez", 20, "hombre", 80, 1.90);
+		Personas persona3 = new Personas("Alejandra", "Carmona", 25, "mujer", 55, 1.63);
+		Personas persona4 = new Personas("Vania", "Tapia", 23, "mujer", 50, 1.50);
+		Personas persona5 = new Personas("Josue", "Hernandez", 30, "hombre", 75, 1.81);
+		
+		Personas per = null;
+		
+		Implementacion imp = new Implementacion();
+		
+		imp.guardar(persona1);
+		imp.guardar(persona2);
+		imp.guardar(persona3);
+		imp.guardar(persona1);
+		imp.guardar(persona5);
+		
+		imp.mostrar();
+		/*
+		//editar
+		per = imp.buscar(0);
+		System.out.println("Elemento encontrado: \n"+ per);
+		per=imp.buscar(1);
+		per.setNombre("Jose");
+		per.setPeso(55);
+		imp.editar(1, persona2);
+		imp.mostrar();
+		
+		//eliminar
+		imp.eliminar(3);
+		imp.mostrar();
+		
+		imp.contar();
+		*/
+		
+		Scanner datos = new Scanner(System.in);
+		int menuP =0, menuS=0, indice = 0;
+		
+		String nombre, apellido, genero;
+		int edad, peso;
+		double estatura;
+		
+		do {
+			System.out.println("MENU");
+			System.out.println("1.- ALTA");
+			System.out.println("2.- BUSCAR");
+			System.out.println("3.- EDITAR");
+			System.out.println("4.- ELIMINAR");
+			System.out.println("5.- MOSTRAR");
+			System.out.println("6.- CONTAR");
+			System.out.println("7.- ELIMINAR TODO");
+			System.out.println("8.- SALIR");
+			System.out.println("Eligue una opcion valida del menu");
+			
+			try {
+				menuP = datos.nextInt();
+				datos.nextLine();
+				
+				switch(menuP) {
+				case 1:
+					System.out.println("1.- ALTA");
+					System.out.println("LLENAR LOS SIGUIENTES DATOS SOBRE LA PERSONA");
+					System.out.println("NOMBRE: ");
+					nombre = datos.nextLine();
+					System.out.println("Apellido: ");
+					apellido = datos.nextLine();
+					System.out.println("Edad: ");
+					edad = datos.nextInt();
+					datos.nextLine();
+					System.out.println("genero: ");
+					genero = datos.nextLine();
+					System.out.println("peso: ");
+					peso = datos.nextInt();
+					datos.nextLine();
+					System.out.println("estatura: ");
+					estatura = datos.nextDouble();
+					datos.nextLine();
+					
+					per = new Personas(nombre, apellido, edad, genero, peso, estatura);
+					
+					if (imp.existenDuplicado(per)) {
+						System.out.println("Este registro ya existe en lista");
+					}else {
+						imp.guardar(per);
+						System.out.println("Se guardo con exito a la persona " + per.getNombre() + "en la lista"); 
+					}break;
+					
+				case 2:
+					System.out.println("2.- BUSCAR");
+					imprimirDatos(imp);
+					System.out.print("Ingrese el nombre del artículo a buscar: ");
+					 Scanner scanner = new Scanner(System.in);
+			        String nombreBuscado = scanner.nextLine();
+
+			        Personas per1 = null;
+
+			        for (Personas art : imp.lista) {
+			            if (art.getNombre().equalsIgnoreCase(nombreBuscado)) {
+			                per1 = art;
+			                break;
+			            }
+			        }
+
+			        if (per1 != null) {
+			            System.out.println("\nPersona encontrada:");
+			            System.out.println("Nombre: " + per1.getNombre());
+			            System.out.println("Apellido: " + per1.getApellido());
+			            System.out.println("Edad: " + per1.getEdad());
+			            System.out.println("Genero: " + per1.getGenero());
+			            System.out.println("Peso: " + per1.getPeso());
+			            System.out.println("Estatura: " + per1.getEstatura());
+			        } else {
+			            System.out.println("\nPersona no encontrada.");
+			        }
+
+			        
+
+					break;
+					
+				case 3:
+					System.out.println("3.- EDITAR");
+					imprimirDatos(imp);
+					if (imp.lista.size() > 0) {
+						System.out.println("indique el indice a editar");
+						indice = datos.nextInt();
+						datos.nextLine();
+						
+						if(indice >= 0 && indice < imp.lista.size()) {
+							do {
+								System.out.println("Menu a editar");
+								System.out.println("1.- Editar nombre");
+								System.out.println("2.- Editar apellido");
+								System.out.println("3.- Editar edad");
+								System.out.println("4.- Editar genero");
+								System.out.println("5.- Editar peso");
+								System.out.println("6.- Editar estatura");
+								System.out.println("7.- Regresar al menu principal");
+								menuS = datos.nextInt();
+								datos.nextLine();
+								per1 = imp.buscar(indice);
+								
+								switch (menuS) {
+								case 1:
+									System.out.println("Ingresa el nuevo nombre");
+									nombre = datos.nextLine();
+									per1.setNombre(nombre);
+									break;
+								case 2:
+									System.out.println("Ingresa el nuevo apellido");
+									apellido = datos.nextLine();
+									per1.setApellido(apellido);
+									break;
+								case 3: 
+									System.out.println("Ingresa la nueva edad");
+									edad = datos.nextInt();
+									per1.setEdad(edad);
+									break;
+								case 4:
+									System.out.println("Ingresa el nuevo genero");
+									genero = datos.nextLine();
+									per1.setGenero(genero);
+									break;
+								case 5: 
+									System.out.println("Ingresa el nuevo peso");
+									peso = datos.nextInt();
+									per1.setPeso(peso);
+									break;
+								case 6: 
+									System.out.println("Ingresa el nuevo estatura");
+									estatura = datos.nextDouble();
+									per1.setEstatura(estatura);
+									break;
+								case 7: 
+									 System.out.print("¿Está seguro que desea regresar al menú principal? (s/n): ");
+									    String confirmarSalida = datos.nextLine();
+									    if (confirmarSalida.equalsIgnoreCase("s")) {
+									        System.out.println("Regresando al menú principal...");
+									    } else {
+									        System.out.println("Cancelado. Continuando en el menú de edición...");
+									        menuS = -1;
+									    }
+									    break;
+									
+								}
+								System.out.println("Edicion exitosa");
+							}while(menuS != 7);
+						}else {
+							System.out.println("indice fuera de rango intente nuevamente");
+						}
+					}
+					break;
+					
+				case 4:
+					System.out.println("ELIMINAR");
+					System.out.print("Ingrese el nombre de la persona a eliminar: ");
+					Scanner scanner1 = new Scanner(System.in);
+					String nombreBuscado1 = scanner1.nextLine();
+
+					Iterator<Personas> iter = imp.lista.iterator();
+					boolean encontrado = false;
+
+					while (iter.hasNext()) {
+					    Personas art = iter.next();
+					    if (art.getNombre().equalsIgnoreCase(nombreBuscado1)) {
+					        encontrado = true;
+
+					        
+					        System.out.print("¿Está seguro que desea eliminar el artículo \"" + art.getNombre() + "\"? (s/n): ");
+					        String confirmacion = scanner1.nextLine();
+
+					        if (confirmacion.equalsIgnoreCase("s")) {
+					            iter.remove();
+					            System.out.println("Persona eliminado: " + art.getNombre());
+					        } else {
+					            System.out.println("Eliminación cancelada.");
+					        }
+
+					        break; 
+					    }
+					}
+
+					if (!encontrado) {
+					    System.out.println("Persona no encontrado.");
+					}
+					break;
+					
+				case 5:
+					System.out.println("5.- MOSTRAR");
+					if(imp.lista.size() >=0) {
+						imp.mostrar();
+					}else {
+						System.out.println("No hay registros disponibles");
+					}
+					break;
+				case 6:
+					System.out.println("6.- CONTAR");
+					imp.contar();
+					break;
+					
+				case 7:
+					System.out.println("7.- ELIMINAR TODOS LOS REGISTROS");
+					String confirmacion;
+					Scanner scan1 = new Scanner(System.in);
+
+					
+					do {
+					    System.out.print("¿Estás seguro de que deseas eliminar todos los artículos? (s/n): ");
+					    confirmacion = scan1.nextLine().trim().toLowerCase();
+
+					    if (!confirmacion.equals("si") && !confirmacion.equals("no")) {
+					        System.out.println("X Opción no válida. Por favor escribe 's' para sí o 'n' para no.");
+					    }
+
+					} while (!confirmacion.equals("s") && !confirmacion.equals("n"));
+
+					
+					if (confirmacion.equals("s")) {
+					    imp.lista.clear();
+					    System.out.println(" Los registros se han eliminado.");
+					} else {
+					    System.out.println("X Operación cancelada. No se eliminó el registro de alguna persona.");
+					}
+
+					System.out.println(" Ahora hay " + imp.lista.size() + " personas en la lista.");	
+					break;
+					
+				case 8:
+					
+					 Scanner scanner11 = new Scanner(System.in);
+					 System.out.print("¿Está seguro que desea salir del menú? (s/n): ");
+					 String salirConfirmacion = scanner11.nextLine(); 
+
+					 if (salirConfirmacion.equalsIgnoreCase("s")) {
+					     System.out.println("Saliendo del menú... hasta luego.");
+					     break;
+					 } else {
+					     System.out.println("Operación cancelada. Volviendo al menú principal.");
+					     
+					 }
+					 break;
+					default:
+						System.out.println("Indice fuera del rango, intoduce una opcion correcta");
+						break;
+
+				}
+				
+				
+			}catch(InputMismatchException e) {
+				System.out.println("Entrada invalida, por favor ingresa un nuemero");
+				datos.nextLine();
+				}catch(Exception e) {
+					System.out.println("Ocurrio un error inesperado ");
+				}
+		}while(menuP !=8);
+	}
+	
+	public static void imprimirDatos(Implementacion imp) {
+		System.out.println("Personas registrados");
+		if(imp.lista.size() >0) {
+			for(int i=0; i<imp.lista.size(); i++) {
+				System.out.println("La persona [" + i + "] con el apellido: " + imp.lista.get(i).getNombre());
+			}
+		}
+	}
+}
