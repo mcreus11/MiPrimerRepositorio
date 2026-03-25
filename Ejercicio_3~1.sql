@@ -1,0 +1,77 @@
+
+--1. -NOMBRE COMPLETE, CARRERA, ESTADO DONDE VIVEN
+
+DECLARE 
+    LV_VARIABLE NUMBER :=0;
+    BEGIN
+        DBMS_OUTPUT.PUT_LINE('MARCO ANTONIO BRITO CORONA, ING. TI, ESTADO DE MEXICO ');
+    END;
+    
+--2.- IMPRIMIR LAS TABLAS DE MULTIPLICAR DEL 1 AL 10 EJ (TABLA DEL 1. 1*1=1)
+BEGIN
+    FOR i IN 1..10 
+    LOOP
+        DBMS_OUTPUT.PUT_LINE('--- TABLA DEL ' || i || ' ---');
+        FOR j IN 1..10 LOOP
+            DBMS_OUTPUT.PUT_LINE(i || ' * ' || j || ' = ' || (i * j));
+        END LOOP;
+    END LOOP;
+END;
+/
+
+--3.- IMPRIMIR LOS NUMEROS PARES DEL 1 AL 20
+
+DECLARE
+    i NUMBER := 0;
+BEGIN
+    WHILE i <= 20 
+    LOOP
+        DBMS_OUTPUT.PUT_LINE('PAR: ' || i);
+        i := i + 2;
+    END LOOP;
+END;
+/
+
+--4.- IMPRIMIR LA SUMA ACUMULADA DE LOS PRIMERO 10 NUMEROS
+
+DECLARE
+    SUMA NUMBER := 0;
+BEGIN
+    FOR i IN 1..10 
+    LOOP
+        SUMA := SUMA + i;
+    END LOOP;
+    DBMS_OUTPUT.PUT_LINE('SUMA ACUMULADA: ' || SUMA);
+END;
+/
+
+--5.- UN CICLO PAR DETERMINAR SI UN NUMERO A PRIMO O NO|
+
+DECLARE
+    NUMERO     NUMBER := 5; 
+    ES_PRIMO   BOOLEAN := TRUE;
+BEGIN
+    IF NUMERO <= 1 THEN
+        ES_PRIMO := FALSE;
+    ELSE
+        FOR i IN 2 .. NUMERO - 1 
+        LOOP
+            IF TRUNC(NUMERO / i) = NUMERO / i THEN
+                ES_PRIMO := FALSE;
+                EXIT;
+            END IF;
+        END LOOP;
+    END IF;
+    DBMS_OUTPUT.PUT_LINE(NUMERO || CASE  WHEN ES_PRIMO THEN ' es primo' ELSE ' no es primo' END);
+END;
+/
+
+
+--6.- IMPRIMIR LA CUENTA REGRESIVA DEL 10 AL 1/
+
+BEGIN
+    FOR i IN REVERSE 1..10 LOOP
+        DBMS_OUTPUT.PUT_LINE('CUENTA REGRESIVA: ' || i);
+    END LOOP;
+END;
+/
