@@ -1,0 +1,53 @@
+package com.mx.Empleado;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.web.servlet.MockMvc;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mx.Empleado.Dominio.Empleado;
+import com.mx.Empleado.Service.IEmpleadoService;
+
+@SpringBootTest
+@AutoConfigureMockMvc
+public class RestControllerTestMock {
+
+    @Autowired
+    private MockMvc mockmvc;
+
+    // Simulamos el servicio que inyecta el controlador
+    @MockBean
+    private IEmpleadoService service;
+
+    @Test
+    void empleadosShouldReturnMessageFromService() throws Exception {
+    	Empleado emp1 = new Empleado(1, "Julian", "Castillo", "Lopez", 23, 782412583, "Auxiliar", "RH", 856);
+    	Empleado emp2 = new Empleado(2, "Jefferson", "Gutieritos", "Lopez", 30, 856912583, "Medico", "Servicio medico", 1035);
+
+        List<Empleado> emps = List.of(emp1, emp2);
+
+        // Simulación: el servicio devuelve una lista de empleados
+        when(service.listar()).thenReturn(emps);
+
+        // Convertir la lista de empleados a JSON
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonResponse = objectMapper.writeValueAsString(emps);
+
+        // Realizar la solicitud GET al endpoint de listar
+        this.mockmvc.perform(get("/api/Empleado/listar"))
+            .andDo(print())
+            .andExpect(status().isOk()) // verificar que el estado HTTP sea OK
+            .andExpect(content().json(jsonResponse)); // verificar que la respuesta JSON sea la esperada
+    }
+}

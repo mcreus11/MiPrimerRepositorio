@@ -1,0 +1,67 @@
+package com.mx.Empleado.Controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.mx.Empleado.Dominio.Empleado;
+import com.mx.Empleado.Service.EmpleadoServiceImp;
+
+@Controller
+@RequestMapping(path = "/")
+public class PruebasController {
+	@Autowired
+	private EmpleadoServiceImp service;
+	
+	@GetMapping
+	public String index(Model model) {
+		List<Empleado> empleados =service.listar();
+		model.addAttribute("empleados", empleados);
+		return "index";
+	}
+	
+	@GetMapping(path ="/nuevo")
+	public String nuevo(Empleado empleado, Model model) {
+		model.addAttribute("empleado", empleado);
+		return "guardar";
+	}
+	
+	//acciones que modifian la base de datos 
+	@PostMapping(path = "/guardar")
+	public String guardar(Empleado empleado) {
+		service.guardar(empleado);
+		return "redirect:/";
+	}
+	
+	//metodo de editar 
+	@GetMapping("/empleados/editar/{id}")
+	public String editarEmpleado(@PathVariable("id") int id, Model model) {
+	    Empleado empleado = new Empleado();
+	    empleado.setIdEmpleado(id); // creo un objeto con el ID
+	    Empleado resultado = service.buscar(empleado); 
+
+	    if (resultado == null) {
+	        throw new IllegalArgumentException("Empleado no encontrado con ID: " + id);
+	    }
+
+	    model.addAttribute("empleado", resultado);
+	    return "guardar";
+	}
+	
+	//metodo de eliminar 
+	@PostMapping("/eliminar")
+	public String eliminarEmpleado(Empleado empleado) {
+	    service.eliminar(empleado);
+	    return "redirect:/";
+	}
+
+
+
+
+}
