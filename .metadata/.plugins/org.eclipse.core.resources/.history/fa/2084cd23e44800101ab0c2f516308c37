@@ -1,0 +1,5 @@
+package com.mx.TRABAJADOR.FeingClient;
+
+public interface PagoClient {
+
+}

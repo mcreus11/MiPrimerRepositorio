@@ -1,0 +1,5 @@
+package com.mx.Pago.FeignClient;
+
+public interface PagoCliente {
+
+}

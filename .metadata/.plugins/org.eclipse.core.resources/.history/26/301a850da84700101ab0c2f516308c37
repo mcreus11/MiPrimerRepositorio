@@ -1,0 +1,184 @@
+package com.mx.TRABAJADOR.Controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.mx.TRABAJADOR.Entidades.Contrato;
+import com.mx.TRABAJADOR.Entidades.Pago;
+import com.mx.TRABAJADOR.Entity.Trabajador;
+import com.mx.TRABAJADOR.Service.TrabajadorServiceImp;
+
+@RestController
+@RequestMapping(path = "/T")
+@CrossOrigin
+public class TrabajadorWs {
+	
+	@Autowired
+	private TrabajadorServiceImp service;
+	//url http://localhost:8010/T
+	//listar
+	@GetMapping
+	public ResponseEntity<?> listar(){
+		List<Trabajador> trabajadores = service.listar();
+		if(trabajadores.isEmpty()) {
+			return ResponseEntity.ok("No hay registros disponibles");
+		}else {
+			return ResponseEntity.ok(trabajadores);
+		}
+		
+	}
+	
+	//GUARDAR
+	@PostMapping
+	public ResponseEntity<?> guardar(@RequestBody Trabajador trabajador){
+		try {
+			boolean existe = service.validarExistenciaTrabajador(trabajador.getNombre(),
+					trabajador.getApellidoPaterno(), trabajador.getApellidoMaterno());
+			if(!existe) {
+				service.guardar(trabajador);
+				return ResponseEntity.ok("El registro se guardo");
+				
+				
+			}else {
+				return ResponseEntity.status(HttpStatus.FOUND).body("el registro ya existe");
+				
+			}
+		}catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).body("error en la solicitud");
+		}
+	}
+	//EDITAR
+	
+	@PutMapping
+	public ResponseEntity<?> editar(@RequestBody Trabajador trabajador) {
+	    try {
+	        Trabajador existente = service.buscar(trabajador.getIdTrabajador());
+	        
+	        if (existente == null) {
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El trabajador no existe");
+	        }
+
+	        boolean duplicado = service.validarExistenciaTrabajador(trabajador.getNombre(),
+	            trabajador.getApellidoPaterno(), trabajador.getApellidoMaterno()
+	        );
+
+	        if (duplicado &&
+	            (!trabajador.getNombre().equalsIgnoreCase(existente.getNombre()) ||
+	             !trabajador.getApellidoPaterno().equalsIgnoreCase(existente.getApellidoPaterno()) ||
+	             !trabajador.getApellidoMaterno().equalsIgnoreCase(existente.getApellidoMaterno()))) {
+	                 
+	            return ResponseEntity.status(HttpStatus.CONFLICT).body("Ya existe un trabajador con el mismo nombre completo");
+	        }
+
+	        service.editar(trabajador);
+	        return ResponseEntity.ok("El trabajador se actualizó correctamente");
+
+	    } catch (IllegalArgumentException e) {
+	        return ResponseEntity.status(HttpStatus.CONFLICT).body("Error en la solicitud");
+	    }
+	}
+
+    
+    // Eliminar
+    @DeleteMapping("/{idTrabajador}")
+    public ResponseEntity<?> eliminar(@PathVariable int idTrabajador) {
+        if (service.buscar(idTrabajador) != null) {
+            service.eliminar(idTrabajador);
+            return ResponseEntity.ok("Trabajador eliminado");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Trabajador no encontrado");
+        }
+    }
+    
+    //BUSCAR POR DEPARTAMENTO
+    @GetMapping("/departamento/{departamentoId}")
+    public ResponseEntity<?> buscarPorDepartamento(@PathVariable int departamentoId) {
+        List<Trabajador> trabajadores = service.buscarPorDepartamento(departamentoId);
+        if (trabajadores.isEmpty()) {
+            return ResponseEntity.ok("No hay trabajadores en ese departamento");
+        } else {
+            return ResponseEntity.ok(trabajadores);
+        }
+    }
+    
+    //BUSCAR POR PAGO
+    @GetMapping("/pago")
+    public ResponseEntity<?> buscarPorPago(@PathVariable int pagoId) {
+        List<Trabajador> trabajadores = service.buscarPorPago(pagoId);
+        if (trabajadores.isEmpty()) {
+            return ResponseEntity.ok("No hay trabajadores con ese tipo de pago");
+        } else {
+            return ResponseEntity.ok(trabajadores);
+        }
+    }
+    
+    //endpoint para mostrar el contrato del trabajador
+    
+    @GetMapping("/contrato/{trabajadorId}")
+    public ResponseEntity<?> listarContratos(@PathVariable int trabajadorId){
+        try {
+            Trabajador trab = service.buscar(trabajadorId);
+            if(trab == null) {
+                return ResponseEntity.ok("No existe trabajador en la base de datos");
+            }
+            List<Contrato> cons = service.obtenerContrato(trabajadorId);
+
+            System.out.println("Contratos encontrados: " + cons.size());
+            cons.forEach(c -> System.out.println(c.toString()));
+
+            if(cons.isEmpty()) {
+                return ResponseEntity.ok("aun no hay un contrato");
+            } else {
+                return ResponseEntity.ok(cons);
+            }
+                
+        } catch(Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("ocurrio un error al procesar la solicitud: "+ e.getMessage());
+        }
+    }
+    
+    @GetMapping("/pago/{trabajadorId}")
+    public ResponseEntity<?> listarPagos(@PathVariable int trabajadorId){
+        try {
+            Trabajador trab = service.buscar(trabajadorId);
+            if (trab == null) {
+                return ResponseEntity.ok("no hay registros"); 
+            }
+            List<Pago> pago = service.obtenerPago(trabajadorId);
+            if(pago.isEmpty()) {
+            return ResponseEntity.ok("el trabajador no cuenta con ningun registro");
+            }else {
+            	return ResponseEntity.ok(pago);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+   
+    @GetMapping("/empresa/{empresaId}")
+    public ResponseEntity<List<Trabajador>> buscarPorEmpresa(@PathVariable int idEmpresa) {
+    	List<Trabajador> lista = service.buscarPorEmpresa(idEmpresa);
+        return ResponseEntity.ok(lista); // Devuelve [] si no hay datos, no un String
+    }
+
+}
+    	
+
+
+
+
+	
+

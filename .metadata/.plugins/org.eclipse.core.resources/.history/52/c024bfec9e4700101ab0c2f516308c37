@@ -1,0 +1,5 @@
+package com.mx.Empresa.Repository;
+
+public interface EmpresaRepository {
+
+}

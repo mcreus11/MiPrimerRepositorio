@@ -1,0 +1,60 @@
+package com.mx.Departamento.Service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
+import com.mx.Departamento.Entidades.Trabajador;
+import com.mx.Departamento.Entity.Departamento;
+import com.mx.Departamento.FeingClient.ITrabajadorFeignClient;
+import com.mx.Departamento.Repository.IDepartamentoRepository;
+
+@Service
+public class DepartamentoServiceImp implements IDepartamentoService{
+
+	@Autowired
+	private IDepartamentoRepository dao;
+	
+	@Override
+	public List<Departamento> listar() {
+		return dao.findAll(Sort.by(Sort.Direction.ASC, "nombre"));
+	}
+
+	@Override
+	public void guardar(Departamento departamento) {
+		dao.save(departamento);
+		
+	}
+
+	@Override
+	public void editar(Departamento departamento) {
+		dao.save(departamento);
+		
+	}
+
+	@Override
+	public Departamento buscar(int idDepartamento) {
+		return dao.findById(idDepartamento).orElse(null);
+	}
+
+	@Override
+	public void eliminar(int idDepartamento) {
+		dao.deleteById(idDepartamento);
+		
+	}
+
+	public boolean existeDepartamento(String nombre) {
+		return dao.existsByNombreAllIgnoringCase(nombre);
+	}
+	
+	//metodo para consumir trabajador usando openFeign
+	@Autowired
+	private ITrabajadorFeignClient trabajadorFeignClient;
+
+	public List<Trabajador> obtenerTrabajadores(int departamentoId) {
+	    return trabajadorFeignClient.buscarPorDepartamento(departamentoId);
+	}
+
+}

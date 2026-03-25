@@ -1,0 +1,15 @@
+package com.mx.Validador.Service;
+
+import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.stereotype.Service;
+
+import com.mx.Validador.Entity.Transaccion;
+@Service
+public class TransaccionService {
+	public boolean validarSha(Transaccion req) {
+	    String datos = req.getOperacion() + req.getImporte() + req.getCliente();
+	    String shaCalculado = DigestUtils.sha512Hex(datos);
+	    return shaCalculado.equals(req.getSha());
+	}
+
+}

@@ -1,0 +1,15 @@
+package com.mx.Almacen.DTO;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class TransaccionResponse {
+    private Long id;
+    private String estatus;
+    private String referencia;
+    private String operacion;
+}

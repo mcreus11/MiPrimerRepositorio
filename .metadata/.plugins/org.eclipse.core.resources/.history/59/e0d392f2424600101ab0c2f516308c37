@@ -1,0 +1,51 @@
+package com.mx.Pago.Service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
+import com.mx.Pago.Entity.Pago;
+import com.mx.Pago.Repository.IPagoRepository;
+@Service
+public class PagoServiceImp implements IPagoService{
+
+	@Autowired
+	private IPagoRepository dao;
+	
+	@Override
+	public void guardar(Pago pago) {
+		dao.save(pago);
+		
+	}
+
+	@Override
+	public List<Pago> listar() {
+		return dao.findAll(Sort.by(Sort.Direction.ASC, "idPago"));
+	}
+
+	@Override
+	public void editar(Pago pago) {
+		dao.save(pago);
+		
+	}
+
+	@Override
+	public Pago buscar(int idPago) {
+		return dao.findById(idPago).orElse(null);
+	}
+
+	@Override
+	public void eliminar(int idPago) {
+		dao.deleteById(idPago);
+		
+	}
+	
+	public List<Pago> pagosPorTrabajador(int trabajadorId) {
+	    return dao.findByTrabajadorId(trabajadorId);
+	}
+	
+	
+
+}

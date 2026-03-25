@@ -1,0 +1,5 @@
+package com.mx.Reserva.Exception;
+
+public class ReservaException {
+
+}

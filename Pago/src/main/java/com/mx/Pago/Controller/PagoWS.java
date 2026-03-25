@@ -1,0 +1,94 @@
+package com.mx.Pago.Controller;
+
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.mx.Pago.Entity.Pago;
+import com.mx.Pago.Service.PagoServiceImp;
+
+@RestController
+@RequestMapping(path ="/P")
+
+public class PagoWS {
+	@Autowired
+    private PagoServiceImp service;
+	
+	@PostMapping("/guardar")
+	public ResponseEntity<Map<String, String>> guardar(@RequestBody Pago pago) {
+	    pago.setFecha(LocalDate.now()); // si lo haces automático
+	    service.guardar(pago);
+	    Map<String, String> response = new HashMap<>();
+	    response.put("mensaje", "Pago guardado correctamente");
+	    return ResponseEntity.ok().body(response);
+	}
+
+
+	@PutMapping
+	public ResponseEntity<?> editar(@RequestBody Pago pago) {
+	    service.editar(pago);
+	    return ResponseEntity.ok(Map.of("mensaje", "Pago editado correctamente"));
+	}
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> eliminar(@PathVariable int id) {
+        service.eliminar(id);
+        return ResponseEntity.ok("Pago eliminado correctamente");
+    }
+
+    @GetMapping
+    public ResponseEntity<?> listar() {
+        List<Pago> lista = service.listar();
+        // ✅ No devuelvas texto plano. Siempre devuelve un array (aunque esté vacío)
+        return ResponseEntity.ok(lista);
+    }
+
+    @GetMapping("/buscar/{id}")
+    public ResponseEntity<?> buscar(@PathVariable int id) {
+        Pago pago = service.buscar(id);
+        if (pago == null) {
+            return ResponseEntity.ok("No se encontró el pago con id: " + id);
+        }
+        return ResponseEntity.ok(pago);
+    }
+
+    @GetMapping("/pagos/por-trabajador/{idTrabajador}")
+    public List<Pago> obtenerPagosPorTrabajador(@PathVariable int idTrabajador) {
+        return service.findByTrabajadorId(idTrabajador);
+    }
+    
+    @GetMapping("/buscarPorTrabajador/{trabajadorId}")
+    public ResponseEntity<?> buscarPorTrabajador(@PathVariable int trabajadorId) {
+        try {
+            List<Pago> pagos = service.buscarPorTrabajador(trabajadorId);
+            if (pagos == null || pagos.isEmpty()) {
+                return ResponseEntity.ok("El trabajador no tiene pagos registrados");
+            } else {
+                return ResponseEntity.ok(pagos);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Ocurrió un error al obtener los pagos: " + e.getMessage());
+        }
+    }
+    
+    
+    
+    
+
+}

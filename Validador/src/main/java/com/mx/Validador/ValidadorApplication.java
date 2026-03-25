@@ -1,0 +1,15 @@
+package com.mx.Validador;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+
+@SpringBootApplication
+@EnableFeignClients
+public class ValidadorApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(ValidadorApplication.class, args);
+	}
+
+}

@@ -1,0 +1,16 @@
+package com.mx.TRABAJADOR.FeingClient;
+
+import java.util.List;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import com.mx.TRABAJADOR.Entidades.Contrato;
+
+@FeignClient(name = "Contrato", url = "http://localhost:9000", path ="/C")
+public interface ContratoClient {
+
+	 @GetMapping("/contrato/trabajador/{idTrabajador}")
+	    List<Contrato> obtenerContratosPorTrabajador(@PathVariable("idTrabajador") int idTrabajador);
+}

@@ -1,0 +1,172 @@
+package com.mx.TRABAJADOR.Service;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import com.mx.TRABAJADOR.Entidades.Contrato;
+import com.mx.TRABAJADOR.Entidades.Pago;
+import com.mx.TRABAJADOR.Entidades.TrabajadorConContratos;
+import com.mx.TRABAJADOR.Entity.Trabajador;
+import com.mx.TRABAJADOR.FeingClient.ContratoClient;
+import com.mx.TRABAJADOR.FeingClient.PagoClient;
+import com.mx.TRABAJADOR.Repository.ITrabajadorDao;
+
+@Service
+public class TrabajadorServiceImp implements ITrabajadorService{
+
+    @Autowired
+	private ITrabajadorDao dao;
+	@Override
+	public List<Trabajador> listar() {
+	    return dao.findAll(Sort.by(Sort.Direction.ASC, "nombre"));
+	}
+
+	@Override
+	public void guardar(Trabajador trabajador) {
+		dao.save(trabajador);
+	}
+
+	@Override
+	public void eliminar(int idTrabajador) {
+		dao.deleteById(idTrabajador);
+		
+	}
+
+	@Override
+	public void editar(Trabajador trabajador) {
+		dao.save(trabajador);
+		
+	}
+
+	@Override
+	public Trabajador buscar(int idTrabajador) {
+		return dao.findById(idTrabajador).orElse(null);
+	}
+	
+	public List<Trabajador> buscarPorDepartamento(int departamentoId){
+		return dao.findByDepartamentoId(departamentoId);
+	}
+
+	public List<Trabajador> buscarPorPago(int pagoId){
+		return dao.findByPagoId(pagoId);
+	}
+	
+	public List<Trabajador> buscarPorEmpresa(int idEmpresa){
+		return dao.findByEmpresaId(idEmpresa);
+	}
+	
+	//validacion
+	public boolean validarExistenciaTrabajador(String nombre, String apellidoPaterno, String apellidoMaterno) {
+		return dao.existsByNombreAndApellidoPaternoAndApellidoMaterno(nombre, apellidoPaterno, apellidoMaterno);
+	}
+	
+	//consumir el contrato usando rest template
+	
+			@Autowired
+			private RestTemplate restTemplate;
+			public List<Contrato> obtenerContrato(int trabajadorId){
+				@SuppressWarnings("unchecked")
+				List<Contrato> cons = restTemplate.getForObject("http://localhost:8011/C/buscarPorTrabajador/" + trabajadorId, List.class);
+				return cons;
+			}
+			
+		//consumir el pago usando resttemplate
+			public List<Pago> obtenerPago(int trabajadorId){
+					@SuppressWarnings("unchecked")
+					List<Pago> pago = restTemplate.getForObject("http://localhost:8012/P/buscarPorTrabajador/"+ trabajadorId, List.class);
+					return pago;
+			}
+			public List<Trabajador> obtenerTrabajadoresPorEmpresa(int idEmpresa) {
+			    return dao.findByEmpresaId(idEmpresa);
+			}
+			
+			@Autowired
+			private PagoClient pagoClient;
+
+			public Map<String, Object> getTrabajadoresConPagos(int idEmpresa) {
+			    Map<String, Object> resultado = new HashMap<>();
+
+			    List<Trabajador> trabs = obtenerTrabajadoresPorEmpresa(idEmpresa);
+
+			    if (trabs.isEmpty()) {
+			        resultado.put("mensaje", "No hay trabajadores registrados");
+			    } else {
+			        resultado.put("trabajadores", trabs);
+
+			        // Obtener pagos por cada trabajador
+			        List<Map<String, Object>> pagos = new ArrayList<>();
+			        for (Trabajador t : trabs) {
+			            try {
+			                Pago pago = pagoClient.obtenerPagoPorId(t.getPagoId());
+			                Map<String, Object> pagoInfo = new HashMap<>();
+			                pagoInfo.put("idTrabajador", t.getIdTrabajador());
+			                pagoInfo.put("nombre", t.getNombre());
+			                pagoInfo.put("pago", pago);
+			                pagos.add(pagoInfo);
+			            } catch (Exception e) {
+			                Map<String, Object> errorPago = new HashMap<>();
+			                errorPago.put("idTrabajador", t.getIdTrabajador());
+			                errorPago.put("error", "No se encontró información de pago");
+			                pagos.add(errorPago);
+			            }
+			        }
+
+			        resultado.put("pagos", pagos);
+			    }
+
+			    return resultado;
+			}
+			
+			
+
+		   
+
+			@Autowired
+			private ContratoClient contratoClient;
+
+			public TrabajadorConContratos obtenerTrabajadorConContratos(int idTrabajador) {
+			    Trabajador trabajador = dao.findById(idTrabajador)
+			        .orElseThrow(() -> new RuntimeException("Trabajador no encontrado"));
+
+			    List<Contrato> contratos = new ArrayList<>();
+			    try {
+			        List<Contrato> respuestaContratos = contratoClient.obtenerContratosPorTrabajador(idTrabajador);
+			        if (respuestaContratos != null) {
+			            contratos = respuestaContratos;
+			        }
+			    } catch (Exception e) {
+			        // Puedes loguear el error si deseas
+			        System.err.println("Error al obtener contratos del trabajador: " + e.getMessage());
+			        // Aquí decides: o lanzas un error, o devuelves sin contratos
+			        // throw new RuntimeException("No se pudieron obtener los contratos"); <-- si deseas lanzar
+			    }
+
+			    TrabajadorConContratos respuesta = new TrabajadorConContratos();
+
+			    // Copiamos datos del trabajador
+			    respuesta.setIdTrabajador(trabajador.getIdTrabajador());
+			    respuesta.setNombre(trabajador.getNombre());
+			    respuesta.setApellidoPaterno(trabajador.getApellidoPaterno());
+			    respuesta.setApellidoMaterno(trabajador.getApellidoMaterno());
+			    respuesta.setPuesto(trabajador.getPuesto());
+			    respuesta.setDepartamentoId(trabajador.getDepartamentoId());
+			    respuesta.setPagoId(trabajador.getPagoId());
+			    respuesta.setEmpresaId(trabajador.getEmpresaId());
+
+			    // Seteamos la lista de contratos
+			    respuesta.setContratos(contratos);
+
+			    return respuesta;
+			}
+
+
+
+
+}

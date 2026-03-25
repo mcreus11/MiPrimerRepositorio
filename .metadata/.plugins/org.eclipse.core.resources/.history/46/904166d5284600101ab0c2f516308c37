@@ -1,0 +1,61 @@
+package com.mx.Contrato.Controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.mx.Contrato.Entity.Contrato;
+import com.mx.Contrato.Service.ContratoServiceImp;
+
+@RestController
+@RequestMapping(path = "/C")
+@CrossOrigin
+public class ContratoWS {
+	@Autowired
+	private ContratoServiceImp service;
+	
+	//listar
+	@GetMapping
+	public ResponseEntity<?> listar(){
+		List<Contrato> con = service.listar();
+		if(con.isEmpty()) {
+			return ResponseEntity.ok("No existen registros");
+		}else {
+			return ResponseEntity.ok(con);
+		}
+	}
+	
+	// guardar
+    
+    @PostMapping("/guardar")
+    public ResponseEntity<?> guardar(@RequestBody Contrato contrato) {
+        service.guardar(contrato);
+        return ResponseEntity.ok("Contrato guardado correctamente");
+    }
+    
+    // editar
+    @PutMapping
+    public ResponseEntity<?> editar(@RequestBody Contrato contrato) {
+        service.editar(contrato);
+        return ResponseEntity.ok("Contrato editado correctamente");
+    }
+    
+    
+ // eliminar 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> eliminar(@PathVariable int id) {
+        service.eliminar(id);
+        return ResponseEntity.ok("Contrato eliminado correctamente");
+    }
+
+}

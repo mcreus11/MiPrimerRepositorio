@@ -1,0 +1,32 @@
+package com.mx.Pago.Entity;
+
+import java.time.LocalDate;
+
+import org.hibernate.annotations.CreationTimestamp;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Data;
+
+@Entity
+@Table
+@Data
+public class Pago {
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int idPago;
+
+	@CreationTimestamp
+    private LocalDate fecha;
+    private double monto;
+
+    @Enumerated(EnumType.STRING)
+    private TipoPago metodo;
+
+    private int trabajadorId;
+}

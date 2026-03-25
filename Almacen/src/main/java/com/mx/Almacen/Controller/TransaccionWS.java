@@ -1,0 +1,44 @@
+package com.mx.Almacen.Controller;
+
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.mx.Almacen.DTO.ActualizarEstatusRequest;
+import com.mx.Almacen.DTO.TransaccionRequest;
+import com.mx.Almacen.DTO.TransaccionResponse;
+import com.mx.Almacen.Entity.Transaccion;
+import com.mx.Almacen.Service.TransaccionService;
+
+import lombok.RequiredArgsConstructor;
+
+@RestController
+@RequestMapping("/api/v1")
+@RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200")
+public class TransaccionWS {
+	private final TransaccionService service;
+
+    @PostMapping("/guardar")
+    public ResponseEntity<TransaccionResponse> guardar(@RequestBody TransaccionRequest req) {
+        return ResponseEntity.ok(service.guardar(req));
+    }
+
+    @GetMapping("/transacciones")
+    public ResponseEntity<List<Transaccion>> obtenerTodas() {
+        return ResponseEntity.ok(service.obtenerTodas());
+    }
+
+    @PatchMapping("/actualizar")
+    public ResponseEntity<String> actualizar(@RequestBody ActualizarEstatusRequest req) {
+        return ResponseEntity.ok(service.actualizarEstatus(req));
+    }
+
+}

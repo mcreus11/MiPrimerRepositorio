@@ -1,0 +1,58 @@
+package com.mx.Departamento.Controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.mx.Departamento.Entity.Departamento;
+import com.mx.Departamento.Service.DepartamentoServiceImp;
+
+@RestController
+@RequestMapping("/D")
+@CrossOrigin
+public class DepartamentoWS {
+
+	@Autowired
+	private DepartamentoServiceImp service;
+	
+	@GetMapping
+	public ResponseEntity<?> listar(){
+		List<Departamento> deps = service.listar();
+		if(deps == null) {
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		}else {
+			return ResponseEntity.ok(deps);
+		}
+	}
+	
+	@PostMapping
+	public ResponseEntity<?> guardar(@RequestBody Departamento departamento){
+		try {
+			boolean existe = service.existeDepartamento(departamento.getNombre());
+			if(!existe) {
+				service.guardar(departamento);
+				return ResponseEntity.ok("el registro se guardo");
+				
+			}else {
+				return ResponseEntity.status(HttpStatus.FOUND).body("ya existe ese departamento");
+			}
+		}catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.CONFLICT).body("error en la solicitud");
+		}
+	}
+	
+	// editar 
+    @PutMapping
+    public void editar(@RequestBody Departamento departamento) {
+        service.editar(departamento);
+    }
+}

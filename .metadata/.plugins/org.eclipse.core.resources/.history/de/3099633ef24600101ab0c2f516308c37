@@ -1,0 +1,5 @@
+package com.mx.Almacen.Entity;
+
+public class Transaccion {
+
+}

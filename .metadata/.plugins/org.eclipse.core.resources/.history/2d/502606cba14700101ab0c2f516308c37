@@ -1,0 +1,16 @@
+package com.mx.Empresa.FeignClient;
+
+import java.util.List;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import com.mx.Empresa.Entidades.Trabajador;
+
+@FeignClient(name ="Trabajador",url = "http://localhost:8010", path = "/T" )
+public interface ITrabajadorFeignClient {
+	 @GetMapping("/empresa/{id}")
+	    List<Trabajador> buscarPorEmpresa(@PathVariable("id") Long empresaId);
+
+}

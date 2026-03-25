@@ -1,0 +1,27 @@
+spring.application.name=ApiGateway
+
+server.port=9000
+
+spring.cloud.service-registry.auto-registration.enabled=true
+#gestion de trabajador
+spring.cloud.gateway.server.webmvc.routes[0].id=Trabajador
+
+spring.cloud.gateway.server.webmvc.routes[0].uri=http://localhost:8010
+
+spring.cloud.gateway.server.webmvc.routes[0].predicates=Path=/T/**
+
+#gestion de pago 
+
+spring.cloud.gateway.server.webmvc.routes[1].id=Pago
+
+spring.cloud.gateway.server.webmvc.routes[1].uri=http://localhost:8012
+
+spring.cloud.gateway.server.webmvc.routes[1].predicates=Path=/P/**
+
+#gestion de empress
+
+spring.cloud.gateway.server.webmvc.routes[2].id=Empresa
+
+spring.cloud.gateway.server.webmvc.routes[2].uri=http://localhost:8013
+
+spring.cloud.gateway.server.webmvc.routes[2].predicates=Path=/E/**

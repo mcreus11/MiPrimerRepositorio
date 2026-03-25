@@ -1,0 +1,5 @@
+package com.mx.Almacen.Service;
+
+public class TransaccionService {
+
+}

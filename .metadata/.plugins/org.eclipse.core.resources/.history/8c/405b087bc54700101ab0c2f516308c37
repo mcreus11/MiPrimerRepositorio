@@ -1,0 +1,5 @@
+package com.mx.Empresa.Entidades;
+
+public class Pago {
+
+}

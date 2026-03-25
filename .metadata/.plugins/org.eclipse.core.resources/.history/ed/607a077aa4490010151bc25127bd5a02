@@ -1,0 +1,33 @@
+package com.mx.TRABAJADOR.Entity;
+
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Data;
+
+@Entity
+@Table
+@Data
+public class Trabajador {
+	
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int idTrabajador;
+	private String nombre;
+	private String apellidoPaterno;
+	private String apellidoMaterno;
+	private String puesto;
+	private int departamentoId;
+	private int pagoId;
+	private int empresaId;
+	
+	private int idContrato;
+	
+	
+	
+	
+}

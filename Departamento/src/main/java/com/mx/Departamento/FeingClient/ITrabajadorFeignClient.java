@@ -1,0 +1,17 @@
+package com.mx.Departamento.FeingClient;
+
+import java.util.List;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import com.mx.Departamento.Entidades.Trabajador;
+
+@FeignClient(name = "Trabajador", url = "http://localhost:9000", path = "/T")
+public interface ITrabajadorFeignClient {
+
+    @GetMapping("/departamento/{departamentoId}")
+    List<Trabajador> buscarPorDepartamento(@PathVariable("departamentoId") int departamentoId);
+}
+

@@ -1,0 +1,57 @@
+	package com.mx.Contrato.Service;
+	
+	import java.util.List;
+	
+	import org.springframework.beans.factory.annotation.Autowired;
+	import org.springframework.data.domain.Sort;
+	import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import com.mx.Contrato.Entity.Contrato;
+	import com.mx.Contrato.Repository.IContratoRepository;
+	
+	@Service
+	public class ContratoServiceImp implements IContratoService{
+	
+		@Autowired
+		private IContratoRepository dao;
+		@Override
+		public void guardar(Contrato contrato) {
+			dao.save(contrato);
+			
+		}
+	
+		@Override
+		public List<Contrato> listar() {
+		    return dao.findAll(Sort.by(Sort.Direction.ASC, "idContrato")); // o "nombre", o "fechaInicio"
+		}
+	
+	
+		@Override
+		public void editar(Contrato contrato) {
+			dao.save(contrato);
+			
+		}
+	
+		@Override
+		public Contrato buscar(int idContrato) {
+			return dao.findById(idContrato).orElse(null);
+		}
+	
+		@Override
+		public void eliminar(int idContrato) {
+			dao.deleteById(idContrato);
+			
+		}
+		
+		public List<Contrato> buscarPorTrabajador(int trabajadorId){
+			return dao.findByTrabajadorId(trabajadorId);
+		}
+
+		public List<Contrato> obtenerPorTrabajador(int idTrabajador) {
+			return dao.findByTrabajadorId(idTrabajador);
+		}
+		
+		
+	
+	}

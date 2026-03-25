@@ -1,0 +1,5 @@
+package com.mx.Validador.Entity;
+
+public class Transaccion {
+
+}

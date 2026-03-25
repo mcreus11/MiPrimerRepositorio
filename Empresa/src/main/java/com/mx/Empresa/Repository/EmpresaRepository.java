@@ -1,0 +1,13 @@
+package com.mx.Empresa.Repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.mx.Empresa.Entity.Empresa;
+
+@Repository
+public interface EmpresaRepository extends JpaRepository<Empresa, Integer>{
+	boolean existsByNombreIgnoreCase(String nombre);
+
+
+}

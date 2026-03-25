@@ -1,0 +1,5 @@
+package com.mx.Pago.Entity;
+
+public class Pago {
+
+}

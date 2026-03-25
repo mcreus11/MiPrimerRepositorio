@@ -1,0 +1,17 @@
+package com.mx.TRABAJADOR.Entidades;
+
+import java.time.LocalDate;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
+public class Contrato {
+	
+	private int idContrato;
+	private LocalDate fechainicio;
+	private String tipo;
+	private int trabajadorId;
+
+}

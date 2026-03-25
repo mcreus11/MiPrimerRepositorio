@@ -1,0 +1,17 @@
+package com.mx.TRABAJADOR.Entidades;
+
+import java.util.List;
+
+import com.mx.TRABAJADOR.Entity.Trabajador;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class TrabajadorConContratos {
+    private Trabajador trabajador;
+    private List<Contrato> contratos;
+}

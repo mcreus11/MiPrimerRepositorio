@@ -1,0 +1,5 @@
+package com.mx.Almacen.Controller;
+
+public class TransaccionWS {
+
+}

@@ -1,0 +1,30 @@
+package com.mx.Validador.Service;
+
+import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.stereotype.Service;
+
+import com.mx.Validador.Entity.Transaccion;
+@Service
+public class TransaccionService {
+	
+	 public boolean validarSha(Transaccion transaccion) {
+	        String operacion = transaccion.getOperacion();
+	        String importe = transaccion.getImporte();
+	        String cliente = transaccion.getCliente();
+
+	        // Esta es la cadena real que se está usando
+	        String cadena = operacion + importe + cliente;
+	        String shaCalculado = DigestUtils.sha512Hex(cadena);
+
+	        // Mostrar todo para depuración
+	        System.out.println("==== Validación de SHA ====");
+	        System.out.println("Operacion: " + operacion);
+	        System.out.println("Importe:   " + importe);
+	        System.out.println("Cliente:   " + cliente);
+	        System.out.println("Cadena:    " + cadena);
+	        System.out.println("SHA Calc:  " + shaCalculado);
+	        System.out.println("SHA Recib: " + transaccion.getSha());
+
+	        return shaCalculado.equals(transaccion.getSha());
+	    }
+}

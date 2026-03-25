@@ -1,0 +1,16 @@
+package com.mx.Validador.Cliente;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import com.mx.Validador.Entity.Transaccion;
+import com.mx.Validador.Entity.TransaccionResponse;
+
+
+
+@FeignClient(name = "api-almacen", url = "http://localhost:8020")
+public interface TransaccionCliente {
+	 @PostMapping("/api/v1/guardar")
+	    TransaccionResponse enviarTransaccion(Transaccion transaccion);
+
+}

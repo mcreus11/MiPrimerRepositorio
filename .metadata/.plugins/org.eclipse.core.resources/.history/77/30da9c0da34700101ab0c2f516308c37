@@ -1,0 +1,59 @@
+package com.mx.Empresa.Service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
+import com.mx.Empresa.Entidades.Trabajador;
+import com.mx.Empresa.Entity.Empresa;
+import com.mx.Empresa.FeignClient.ITrabajadorFeignClient;
+import com.mx.Empresa.Repository.EmpresaRepository;
+
+@Service
+public class EmpresaServiceImp implements IEmpresaService{
+	@Autowired
+	private EmpresaRepository dao;
+
+	@Override
+	public void guardar(Empresa empresa) {
+		dao.save(empresa);
+		
+	}
+
+	@Override
+	public void editar(Empresa empresa) {
+		dao.save(empresa);
+		
+	}
+
+	@Override
+	public void eliminar(Long id) {
+		dao.deleteById(id);
+		
+	}
+
+	@Override
+	public Empresa buscarPorId(Long id) {
+		return dao.findById(id).orElse(null);
+	}
+	
+	public boolean existeEmpresa(String nombre) {
+	    return dao.existsByNombreIgnoreCase(nombre);
+	}
+
+
+	@Override
+	public List<Empresa> listar() {
+		return dao.findAll(Sort.by(Sort.Direction.ASC, "nombre"));
+	}
+	
+	@Autowired
+	private ITrabajadorFeignClient trabajadorFeignClient;
+
+	public List<Trabajador> obtenerTrabajadoresPorEmpresa(Long id) {
+	    return trabajadorFeignClient.buscarPorEmpresa(id);
+	}
+
+}

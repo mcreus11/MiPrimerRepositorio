@@ -1,0 +1,227 @@
+{
+  "info": {
+    "name": "Spring Catalog JWT AES Collection",
+    "_postman_id": "b3e1cd7e-1111-2222-3333-abcdefabcdef",
+    "description": "Colección para probar login JWT, catálogo, PokeAPI y cifrado AES.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth - Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\": \"admin\", \"password\": \"admin123\"}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/auth/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "auth",
+            "login"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Items - GET all",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/items",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "items"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Items - GET filter by nombre",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/items?nombre=Israel",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "items"
+          ],
+          "query": [
+            {
+              "key": "nombre",
+              "value": "Israel"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Items - POST filter (body)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"nombre\": \"Israel\"}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/items/filter",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "items",
+            "filter"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Pokemon - Ditto",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/pokemon/ditto",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "pokemon",
+            "ditto"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Crypto - Encrypt",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"texto\": \"hola mundo\", \"key\": \"0123456789abcdef0123456789abcdef\", \"iv\": \"0123456789abcdef\"}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/crypto/encrypt",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "crypto",
+            "encrypt"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Crypto - Decrypt",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"texto\": \"{{lastCipher}}\", \"key\": \"0123456789abcdef0123456789abcdef\", \"iv\": \"0123456789abcdef\"}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/crypto/decrypt",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "crypto",
+            "decrypt"
+          ]
+        }
+      }
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "lastCipher",
+      "value": ""
+    }
+  ]
+}

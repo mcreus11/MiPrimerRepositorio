@@ -1,0 +1,11 @@
+package com.mx.Pago.Repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.mx.Pago.Entity.Pago;
+
+public interface IPagoRepository extends JpaRepository<Pago, Integer> {
+    List<Pago> findByTrabajadorId(int trabajadorId);
+}

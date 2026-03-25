@@ -1,0 +1,5 @@
+package com.mx.Contrato.Repository;
+
+public interface IContratoRepository {
+
+}

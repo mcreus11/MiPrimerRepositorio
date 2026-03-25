@@ -1,0 +1,16 @@
+package com.mx.Reserva.Entity;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+import lombok.Data;
+
+@Data
+public class Reserva {
+	private int id;
+    private int salaId;
+    private String usuario;
+    private LocalDate fecha;
+    private LocalTime horaInicio;
+    private int duracionHoras;
+}

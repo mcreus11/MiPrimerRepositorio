@@ -1,0 +1,30 @@
+package com.mx.Validador.Entity;
+
+import org.apache.commons.codec.digest.DigestUtils;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import lombok.Data;
+
+@Data
+public class Transaccion {
+	
+	@Pattern(regexp = "^[a-zA-Z]+$", message = "Operación inválida")
+    private String operacion;
+
+    @Pattern(regexp = "^[0-9]+(\\.[0-9]{1,2})?$", message = "Importe inválido")
+    private String importe;
+
+    @Pattern(regexp = "^[a-zA-Z]+$", message = "Cliente inválido")
+    private String cliente;
+
+    @NotBlank
+    private String sha;
+    
+    public boolean validarSha() {
+        String datos = this.getOperacion() + this.getImporte() + this.getCliente();
+        String shaCalculado = DigestUtils.sha512Hex(datos);
+        return shaCalculado.equals(this.getSha());
+    }
+
+}

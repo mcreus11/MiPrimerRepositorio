@@ -1,0 +1,23 @@
+package com.mx.Validador.Entity;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.ws.rs.PathParam;
+import lombok.Data;
+
+@Data
+public class Transaccion {
+	
+	@Pattern(regexp = "^[a-zA-Z]+$", message = "Operación inválida")
+    private String operacion;
+
+    @Pattern(regexp = "^[0-9]+(\\.[0-9]{1,2})?$", message = "Importe inválido")
+    private String importe;
+
+    @Pattern(regexp = "^[a-zA-Z]+$", message = "Cliente inválido")
+    private String cliente;
+
+    @NotBlank
+    private String sha;
+
+}

@@ -1,0 +1,46 @@
+package com.mx.Pago.Service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.mx.Pago.Entity.Pago;
+import com.mx.Pago.Repository.IPagoRepository;
+@Service
+public class PagoServiceImp implements IPagoService{
+
+	@Autowired
+	private IPagoRepository dao;
+	
+	@Override
+	public void guardar(Pago pago) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<Pago> listar() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void editar(Pago pago) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Pago buscar(int idPago) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void eliminar(int idPago) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

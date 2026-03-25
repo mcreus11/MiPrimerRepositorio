@@ -1,0 +1,67 @@
+package com.mx.Reserva.Service;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+
+import com.mx.Reserva.Entity.Reserva;
+import com.mx.Reserva.Exception.ReservaException;
+
+public class ReservaService {
+	 private final Map<Integer, Reserva> reservas = new HashMap<>();
+	    private final AtomicInteger contador = new AtomicInteger();
+
+	    public Reserva crearReserva(Reserva reserva) {
+	        int id = contador.incrementAndGet();
+	        reserva.setId(id);
+	        validarReserva(reserva);
+	        reservas.put(id, reserva);
+	        return reserva;
+	    }
+
+	    public void cancelarReserva(int id) {
+	        if (!reservas.containsKey(id)) {
+	            throw new ReservaException("Reserva no encontrada.");
+	        }
+	        reservas.remove(id);
+	    }
+
+	    public List<Reserva> listarReservasPorSalaYFecha(int salaId, LocalDate fecha) {
+	        return reservas.values().stream()
+	                .filter(r -> r.getSalaId() == salaId && r.getFecha().equals(fecha))
+	                .collect(Collectors.toList());
+	    }
+
+	    private void validarReserva(Reserva nueva) {
+	        if (nueva.getDuracionHoras() > 4 || nueva.getDuracionHoras() <= 0) {
+	            throw new ReservaException("La duración máxima de la reserva es de 4 horas.");
+	        }
+
+	        if (nueva.getFecha().isBefore(LocalDate.now())) {
+	            throw new ReservaException("No se pueden hacer reservas para fechas en el pasado.");
+	        }
+
+	        LocalTime horaFin = nueva.getHoraInicio().plusHours(nueva.getDuracionHoras());
+	        if (nueva.getHoraInicio().isBefore(LocalTime.of(8, 0)) || horaFin.isAfter(LocalTime.of(20, 0))) {
+	            throw new ReservaException("Las reservas solo pueden hacerse entre las 8:00 y 20:00.");
+	        }
+
+	        for (Reserva existente : reservas.values()) {
+	            if (existente.getSalaId() == nueva.getSalaId() &&
+	                existente.getFecha().equals(nueva.getFecha())) {
+
+	                LocalTime iniExistente = existente.getHoraInicio();
+	                LocalTime finExistente = iniExistente.plusHours(existente.getDuracionHoras());
+
+	                boolean solapan = !(horaFin.isBefore(iniExistente) || nueva.getHoraInicio().isAfter(finExistente));
+	                if (solapan) {
+	                    throw new ReservaException("La sala ya está reservada para el horario especificado.");
+	                }
+	            }
+	        }
+	    }
+}

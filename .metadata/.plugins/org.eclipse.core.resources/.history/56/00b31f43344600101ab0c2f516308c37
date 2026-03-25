@@ -1,0 +1,16 @@
+package com.mx.TRABAJADOR.RestTemplateConfig;
+
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
+
+@AutoConfiguration
+public class RestConfig {
+	@Bean
+	RestTemplate restTemplate() {
+		return new RestTemplate();
+	}
+	
+	
+
+}

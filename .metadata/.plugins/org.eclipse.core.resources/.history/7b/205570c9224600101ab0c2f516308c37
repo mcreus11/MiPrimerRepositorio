@@ -1,0 +1,8 @@
+spring.application.name=Contrato
+
+server.port=8011
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format-sql=true
+logging.level.org.hibernate.sql=debug
+logging.level.org.hibernate.type.descriptor.sql.BasicBinder=trace
+eureka.client.service-url.defaultZone=http://localhost:8761/eurekal

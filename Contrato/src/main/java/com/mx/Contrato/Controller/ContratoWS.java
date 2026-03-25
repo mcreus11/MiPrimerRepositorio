@@ -1,0 +1,92 @@
+package com.mx.Contrato.Controller;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.mx.Contrato.Entity.Contrato;
+import com.mx.Contrato.Service.ContratoServiceImp;
+
+@RestController
+@RequestMapping(path = "/C")
+public class ContratoWS {
+	@Autowired
+	private ContratoServiceImp service;
+	
+	//listar
+	@GetMapping
+	public ResponseEntity<List<Contrato>> listar() {
+	    return ResponseEntity.ok(service.listar());
+	}
+
+	
+	// guardar
+    
+	@PostMapping("/guardar")
+	public ResponseEntity<?> guardar(@RequestBody Contrato contrato) {
+	    service.guardar(contrato);
+	    return ResponseEntity.ok(Map.of("mensaje", "Contrato guardado correctamente"));
+	}
+
+    
+    // editar
+    @PutMapping
+    public ResponseEntity<?> editar(@RequestBody Contrato contrato) {
+        service.editar(contrato);
+        // Devuelve el contrato actualizado o un objeto con mensaje
+        return ResponseEntity.ok(contrato);
+        // o
+        // return ResponseEntity.ok(Map.of("mensaje", "Contrato editado correctamente"));
+    }
+
+    
+    
+ // eliminar 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Map<String, String>> eliminar(@PathVariable int id) {
+        service.eliminar(id);
+        Map<String, String> respuesta = new HashMap<>();
+        respuesta.put("mensaje", "Contrato eliminado correctamente");
+        return ResponseEntity.ok(respuesta);
+    }
+
+    
+ // Buscar por trabajadorId
+    @GetMapping("/buscarPorTrabajador/{trabajadorId}")
+    public ResponseEntity<?> buscarPorTrabajador(@PathVariable int trabajadorId) {
+        List<Contrato> contratos = service.buscarPorTrabajador(trabajadorId);
+        if (contratos.isEmpty()) {
+            return ResponseEntity.ok("No hay contratos para este trabajador");
+        }
+        return ResponseEntity.ok(contratos);
+    }
+    
+ // Buscar por id
+    @GetMapping("/buscar/{id}")
+    public ResponseEntity<?> buscar(@PathVariable int id) {
+        Contrato contrato = service.buscar(id);
+        if (contrato == null) {
+            return ResponseEntity.status(404).body("Contrato no encontrado");
+        }
+        return ResponseEntity.ok(contrato);
+    }
+    
+    @GetMapping("/por-trabajador/{idTrabajador}")
+    public ResponseEntity<List<Contrato>> obtenerPorTrabajador(@PathVariable int idTrabajador) {
+        List<Contrato> contratos = service.obtenerPorTrabajador(idTrabajador);
+        return ResponseEntity.ok(contratos);
+    }
+
+}

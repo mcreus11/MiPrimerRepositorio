@@ -1,0 +1,8 @@
+package com.mx.Pago.Entity;
+
+public enum TipoPago {
+	EFECTIVO,
+	TRANFERENCIA,
+	DEPOSITO,
+
+}

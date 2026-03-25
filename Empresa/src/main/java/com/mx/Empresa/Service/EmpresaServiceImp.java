@@ -1,0 +1,85 @@
+package com.mx.Empresa.Service;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
+import com.mx.Empresa.Entidades.Pago;
+import com.mx.Empresa.Entidades.Trabajador;
+import com.mx.Empresa.Entity.Empresa;
+import com.mx.Empresa.FeignClient.IPagoFeignClient;
+import com.mx.Empresa.FeignClient.ITrabajadorFeignClient;
+import com.mx.Empresa.Repository.EmpresaRepository;
+
+@Service
+public class EmpresaServiceImp implements IEmpresaService{
+	@Autowired
+	private EmpresaRepository dao;
+
+	@Override
+	public void guardar(Empresa empresa) {
+		dao.save(empresa);
+		
+	}
+
+	@Override
+	public void editar(Empresa empresa) {
+		dao.save(empresa);
+		
+	}
+
+	@Override
+	public void eliminar(int idEmpresa) {
+		dao.deleteById(idEmpresa);
+		
+	}
+
+	@Override
+	public Empresa buscarPorId(int idEmpresa) {
+		return dao.findById(idEmpresa).orElse(null);
+	}
+	
+	public boolean existeEmpresa(String nombre) {
+	    return dao.existsByNombreIgnoreCase(nombre);
+	}
+
+
+	@Override
+	public List<Empresa> listar() {
+		return dao.findAll(Sort.by(Sort.Direction.ASC, "nombre"));
+	}
+	
+	@Autowired
+	private ITrabajadorFeignClient trabajadorFeignClient;
+
+	public List<Trabajador> obtenerTrabajadoresPorEmpresa(int idEmpresa) {
+	    return trabajadorFeignClient.buscarPorDepartamento(idEmpresa);
+	}
+	
+	//metodo que liste toda la info
+	public Map<String, Object> getModulos(int idEmpresa){
+		Map<String, Object> resultado = new HashMap<>();
+		Empresa empresa = dao.findById(idEmpresa).orElse(null);
+		if(empresa == null) {
+			resultado.put("Empresa mensaje", "Esta empresa no esta registrada");
+			
+		}else {
+			resultado.put("Empresa", empresa);
+			//consulta si hay trabajadores
+			List<Trabajador> trabs = obtenerTrabajadoresPorEmpresa(idEmpresa);
+			if(trabs.isEmpty()) {
+				resultado.put("trabajador mensaje: ", "no hay trabajadores registrados");
+			}else {
+				resultado.put("trabajador", trabs);
+			}
+		}
+		return resultado;
+	}
+
+
+}

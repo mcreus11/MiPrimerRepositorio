@@ -1,0 +1,5 @@
+package com.mx.Empresa.Entity;
+
+public class Empresa {
+
+}

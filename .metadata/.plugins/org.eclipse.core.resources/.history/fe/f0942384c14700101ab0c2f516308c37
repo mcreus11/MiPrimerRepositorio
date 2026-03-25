@@ -1,0 +1,16 @@
+package com.mx.Pago.Service;
+
+import java.util.List;
+
+import com.mx.Pago.Entity.Pago;
+
+
+public interface IPagoService {
+	public void guardar(Pago pago);
+	public List<Pago> listar();
+	public void editar(Pago pago);
+	public Pago buscar(int idPago);
+	public void eliminar(int idPago);
+	public List<Pago> pagosPorTrabajador(int trabajadorId);
+	List<Pago> buscarPorTrabajador(int trabajadorId);
+}

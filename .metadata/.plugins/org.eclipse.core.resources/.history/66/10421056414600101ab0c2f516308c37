@@ -1,0 +1,5 @@
+package com.mx.Pago.Service;
+
+public class PagoServiceImp {
+
+}
